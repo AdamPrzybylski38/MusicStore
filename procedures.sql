@@ -108,23 +108,25 @@ $$ LANGUAGE plpgsql;
 
 --make_order
 
-CREATE OR REPLACE FUNCTION make_order(_id_user INT, _id_album INT)
+CREATE OR REPLACE FUNCTION make_order(p_id_user INTEGER, p_id_album INTEGER)
 RETURNS VOID AS $$
 DECLARE
     v_id_copy INT;
 BEGIN
+    -- Znajdź wolną kopię albumu
     SELECT c.id_copy INTO v_id_copy
     FROM copies c
     LEFT JOIN orders o ON c.id_copy = o.id_copy AND o.status != 'anulowane'
-    WHERE c.id_album = _id_album AND o.id_order IS NULL
+    WHERE c.id_album = p_id_album AND o.id_order IS NULL
     LIMIT 1;
 
     IF v_id_copy IS NULL THEN
-        RAISE EXCEPTION 'Brak dostępnych kopii albumu o ID %', _id_album;
+        RAISE EXCEPTION 'Brak dostępnych kopii albumu o ID %', p_id_album;
     END IF;
 
-    INSERT INTO orders (id_user, id_copy, status)
-    VALUES (_id_user, v_id_copy, 'oczekujące');
+    -- Wstaw zamówienie
+    INSERT INTO orders(id_user, id_copy, order_date, status)
+    VALUES (p_id_user, v_id_copy, NOW(), 'złożone');
 END;
 $$ LANGUAGE plpgsql;
 

@@ -7,6 +7,12 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE admins (
+    id_admin SERIAL PRIMARY KEY,
+    id_user INT NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
+);
+
 CREATE TABLE mods (
     id_mod SERIAL PRIMARY KEY,
     id_user INT NOT NULL,

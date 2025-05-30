@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // uruchomienie skryptu Python
     //MacOS & Linux
-    $command = "source chbk-env/bin/activate && python3 connect.py $escaped_query $history_json 2>&1";
+    $command = "source msenv/bin/activate && python3 connect.py $escaped_query $history_json 2>&1";
 
     //Windows
     //$command = "python connect.py $escaped_query $history_json 2>&1";
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="d-flex gap-2">
-                        <a href="interests.php" class="btn btn-outline-primary">Zainteresowania</a>
+                        <a href="store.php" class="btn btn-outline-primary">Powrót do sklepu</a>
                         <a href="logout.php" class="btn btn-danger">Wyloguj się</a>
                     </div>
                 </div>

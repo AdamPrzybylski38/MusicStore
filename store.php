@@ -46,7 +46,9 @@ require_once "connect.php";
             </div>
 
             <div class="d-flex gap-2">
-                <a href="orders.php" class="btn btn-outline-primary">Zamówienia</a>
+                <a href="chat.php" class="btn btn-outline-success">Asystent AI</a>
+                <a href="cart.php" class="btn btn-outline-primary">Koszyk</a>
+                <a href="orders.php" class="btn btn-outline-info">Zamówienia</a>
                 <a href="logout.php" class="btn btn-danger">Wyloguj się</a>
             </div>
         </div>
@@ -55,50 +57,59 @@ require_once "connect.php";
     </header>
 
     <br>
-<main>
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <main>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
-            <?php
-            try {
-                $stmt = $connect->query("SELECT * FROM get_available_albums()");
-                $albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                <?php
+                try {
+                    $stmt = $connect->query("SELECT * FROM get_available_albums()");
+                    $albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                if ($albums && count($albums) > 0) {
-                    foreach ($albums as $row) {
-                        $id_album = (int) $row['id_album'];
-                        $title = htmlspecialchars($row['title']);
-                        $artist = htmlspecialchars($row['artist_name']);
-                        $copies = (int) $row['available_copies'];
-                        $cover = htmlspecialchars($row['cover_path']);
-                        $price = number_format((float) $row['price'], 2, ',', '');
+                    if ($albums && count($albums) > 0) {
+                        foreach ($albums as $row) {
+                            $id_album = (int) $row['id_album'];
+                            $title = htmlspecialchars($row['title']);
+                            $artist = htmlspecialchars($row['artist_name']);
+                            $copies = (int) $row['available_copies'];
+                            $cover = htmlspecialchars($row['cover_path']);
+                            $price = number_format((float) $row['price'], 2, ',', '');
 
-                        echo <<<HTML
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <img src="$cover" class="card-img-top" alt="Okładka albumu">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">$title</h5>
-                                    <p class="card-text text-muted mb-1">$artist</p>
-                                    <p class="card-text fw-bold">Cena: $price zł</p>
-                                    <p class="card-text fw-bold">Dostępne sztuki: $copies</p>
-                                    <a href="add_to_cart.php?id_album=$id_album" class="btn btn-primary mt-auto">Dodaj do koszyka</a>
+                            // Komunikat dla tego albumu (jeśli istnieje)
+                            $message = '';
+                            if (isset($_SESSION['message'][$id_album])) {
+                                $msg_text = htmlspecialchars($_SESSION['message'][$id_album]);
+                                $message = "<div class='alert alert-info py-1 px-2 mb-2'>$msg_text</div>";
+                            }
+
+                            echo <<<HTML
+                            <div class="col">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="$cover" class="card-img-top" alt="Okładka albumu">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">$title</h5>
+                                        <p class="card-text text-muted mb-1">$artist</p>
+                                        <p class="card-text fw-bold">Cena: $price zł</p>
+                                        <p class="card-text fw-bold">Dostępne sztuki: $copies</p>
+                                        $message
+                                        <a href="add_to_cart.php?id_album=$id_album" class="btn btn-primary mt-auto">Dodaj do koszyka</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        HTML;
+                            HTML;
+                            unset($_SESSION['message'][$id_album]);
+                        }
+                    } else {
+                        echo '<div class="col-12 text-center"><p class="text-muted">Brak dostępnych albumów.</p></div>';
                     }
-                } else {
-                    echo '<div class="col-12 text-center"><p class="text-muted">Brak dostępnych albumów.</p></div>';
+                } catch (PDOException $e) {
+                    echo '<div class="col-12 text-danger">Błąd zapytania: ' . htmlspecialchars($e->getMessage()) . '</div>';
                 }
-            } catch (PDOException $e) {
-                echo '<div class="col-12 text-danger">Błąd zapytania: ' . htmlspecialchars($e->getMessage()) . '</div>';
-            }
-            ?>
+                ?>
 
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
 </body>
 
