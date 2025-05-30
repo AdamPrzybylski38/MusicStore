@@ -75,6 +75,17 @@ CREATE TABLE orders (
 );
 
 -- Sample data for the MusicStore database
+INSERT INTO users (username, email, password)
+VALUES ('admin', 'admin@email.com', '$2a$06$yj5f3YSAshFeYphvcHv5Z.Uw9DxMJFVMKEiokI37/InJTM8mbCZuC');
+
+INSERT INTO users (username, email, password)
+VALUES ('moderator', 'mod@email.com', '$2a$06$3PNy1HacQE1XZ3WlH0sgJu5RqTBwoTu40iPGF1miVH5YpC3FTkYh2');
+
+INSERT INTO admins (id_user)
+(SELECT id_user FROM users WHERE email = 'admin@email.com');
+
+INSERT INTO mods (id_user)
+(SELECT id_user FROM users WHERE email = 'mod@email.com');
 
 INSERT INTO artists (artist_name) VALUES
 ('Radiohead'),

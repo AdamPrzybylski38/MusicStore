@@ -90,18 +90,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </h1>
                 </div>
             </div>
-    </header>
-
+        </div>
+        <div>
             <div class="bg-light text-dark rounded py-2 px-3">
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                <div class="container">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
 
-                    <div class="mb-0 fs-4 fw-semibold">
-                        Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!
-                    </div>
+                        <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
+                            Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!
+                        </div>
 
-                    <div class="d-flex gap-2">
-                        <a href="store.php" class="btn btn-outline-primary">Powrót do sklepu</a>
-                        <a href="logout.php" class="btn btn-danger">Wyloguj się</a>
+                        <div
+                            class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
+                            <a href="store.php" class="btn btn-secondary w-sm-100 w-md-auto">Powrót do sklepu</a>
+                            <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
+                        </div>
+
                     </div>
                 </div>
             </div>

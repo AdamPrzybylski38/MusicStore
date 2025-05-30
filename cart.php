@@ -52,32 +52,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="text-center mb-3">
                 <div class="d-inline-flex align-items-center">
                     <img src="ms_logo.svg" alt="Music Store Logo"
-                         style="width: 3rem; height: 3rem; margin-right: 0.5rem;">
+                        style="width: 3rem; height: 3rem; margin-right: 0.5rem;">
                     <h1 class="mb-0 fs-2 text-primary">
                         Sklep Muzyczny <span class="header-badge">v0.1</span>
                     </h1>
                 </div>
             </div>
-    </header>
+        </div>
+        <div>
+            <div class="bg-light text-dark rounded py-2 px-3">
+                <div class="container">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
 
-    <div class="bg-light text-dark rounded py-2 px-3">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <div class="mb-0 fs-4 fw-semibold">
-                Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!
-            </div>
-            <div class="d-flex gap-2">
-                <a href="store.php" class="btn btn-outline-primary">Powrót do sklepu</a>
-                <a href="logout.php" class="btn btn-danger">Wyloguj się</a>
+                        <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
+                            Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!
+                        </div>
+
+                        <div
+                            class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
+                            <a href="store.php" class="btn btn-secondary w-sm-100 w-md-auto">Powrót do sklepu</a>
+                            <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
     </header>
 
-    <br>
-
     <main>
-        <div class="container mb-5">
+        <div class="main-box">
             <h2 class="mb-3">Twój koszyk</h2>
 
             <?php if (!empty($_SESSION['cart'])): ?>
@@ -102,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $total_price += $subtotal;
 
                             $subtotal_formatted = number_format($subtotal, 2, ',', '');
-                        ?>
+                            ?>
                             <div class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     <?= $title ?> <span class="badge bg-secondary"><?= $quantity ?> szt.</span>
@@ -113,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="mt-3 text-end">
-                        <h5 class="fw-semibold">Łączna cena: <?= number_format($total_price, 2, ',', '') ?> zł</h5>
+                        <h5 class="fw-semibold">Suma: <?= number_format($total_price, 2, ',', '') ?> zł</h5>
                     </div>
 
                     <div class="mt-3 d-flex gap-2">

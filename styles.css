@@ -59,6 +59,17 @@ body {
     max-height: 75vh;
 }
 
+.main-box {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
 main {
     min-height: 80vh;
     display: flex;
