@@ -86,19 +86,19 @@ require_once "connect.php";
                             }
 
                             echo <<<HTML
-                            <div class="col">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="$cover" class="card-img-top" alt="Okładka albumu">
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">$title</h5>
-                                        <p class="card-text text-muted mb-1">$artist</p>
-                                        <p class="card-text fw-bold">Cena: $price zł</p>
-                                        <p class="card-text fw-bold">Dostępne sztuki: $copies</p>
-                                        $message
-                                        <a href="add_to_cart.php?id_album=$id_album" class="btn btn-outline-primary mt-auto">Dodaj do koszyka</a>
+                                <div class="col">
+                                    <div class="card h-100 shadow-sm">
+                                        <img src="$cover" class="card-img-top" alt="Okładka albumu">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">$title</h5>
+                                            <p class="card-text text-muted mb-1">$artist</p>
+                                            <p class="card-text fw-bold">Cena: $price zł</p>
+                                            <p class="card-text fw-bold">Dostępne sztuki: $copies</p>
+                                            $message
+                                            <a href="add_to_cart.php?id_album=$id_album" class="btn btn-outline-primary mt-auto">Dodaj do koszyka</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             HTML;
                             unset($_SESSION['message'][$id_album]);
                         }

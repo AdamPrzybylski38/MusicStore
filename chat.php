@@ -118,11 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main>
         <div class="chat-container">
             <div id="response-box" class="mb-3"></div>
-            <div id="suggestions" class="mb-3 d-flex flex-wrap justify-content-center gap-2 px-2 px-sm-0"></div>
             <div class="input-group">
                 <a href="chat.php?new_chat=1" class="btn btn-secondary">+</a>
-                <input type="text" name="query" id="query" class="form-control" placeholder="Wpisz zapytanie..."
-                    required>
+                <input type="text" name="query" id="query" class="form-control" placeholder="Wpisz zapytanie..." required>
                 <button id="send-btn" class="btn btn-primary">Wyślij</button>
             </div>
         </div>

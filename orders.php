@@ -78,18 +78,18 @@ require_once "connect.php";
                             $date = date('d.m.Y H:i', strtotime($order['order_date']));
 
                             echo <<<HTML
-                        <div class="col-12 mb-3">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title mb-1">$title</h5>
-                                    <p class="card-text text-muted mb-1">$artist</p>
-                                    <p class="card-text mb-1">Cena: $price zł</p>
-                                    <p class="card-text mb-1">Zamówiono: $date</p>
-                                    <p class="card-text"><span class="badge bg-secondary">$status</span></p>
+                                <div class="col-12 mb-3">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-1">$title</h5>
+                                            <p class="card-text text-muted mb-1">$artist</p>
+                                            <p class="card-text mb-1">Cena: $price zł</p>
+                                            <p class="card-text mb-1">Zamówiono: $date</p>
+                                            <p class="card-text"><span class="badge bg-secondary">$status</span></p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        HTML;
+                            HTML;
                         }
                     } else {
                         echo '<p class="text-muted">Nie masz jeszcze żadnych zamówień.</p>';
