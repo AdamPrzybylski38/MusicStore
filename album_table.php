@@ -59,6 +59,7 @@ try {
             <td>
                 <div class='d-flex justify-content-center gap-2'>
                     <button class='btn btn-sm btn-danger delete-album' data-id='{$album['id_album']}' title='Usuń'><i class='bi bi-trash'></i></button>
+                     <a href='edit_products.php?id_album={$album['id_album']}' class='btn btn-sm btn-warning' title='Edytuj'><i class='bi bi-pencil'></i></a>
                 </div>
             </td>
           </tr>";

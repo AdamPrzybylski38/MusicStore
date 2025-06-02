@@ -17,6 +17,14 @@ $action = $_POST['action'] ?? '';
 
 switch ($action) {
     case 'add':
+        // Walidacja ceny
+        $price = floatval($_POST['price']);
+        if ($price < 0) {
+            $_SESSION['album_message'] = "❌ Cena nie może być ujemna.";
+            header("Location: manage_products.php");
+            exit();
+        }
+
         // Obsługa nowego artysty lub wybranego istniejącego
         if (!empty($_POST['new_artist'])) {
             $stmt = $connect->prepare("INSERT INTO artists (artist_name) VALUES (:name) RETURNING id_artist");
@@ -25,7 +33,7 @@ switch ($action) {
         } elseif (!empty($_POST['id_artist'])) {
             $id_artist = (int) $_POST['id_artist'];
         } else {
-            $_SESSION['album_message'] = "❌ Musisz wybrać istniejącego artystę lub podać nowego.";
+            $_SESSION['album_message'] = "Musisz wybrać istniejącego artystę lub podać nowego.";
             header("Location: manage_products.php");
             exit();
         }
@@ -37,11 +45,11 @@ switch ($action) {
             'id_artist' => $id_artist,
             'title' => $_POST['title'],
             'release_date' => $_POST['release_date'],
-            'price' => $_POST['price'],
+            'price' => $price,
             'cover_path' => $_POST['cover_path'] ?? 'albums/default_cover.png'
         ]);
 
-        $_SESSION['album_message'] = "✅ Dodano album.";
+        $_SESSION['album_message'] = "Dodano album.";
         header("Location: manage_products.php");
         exit();
 
@@ -52,16 +60,25 @@ switch ($action) {
         break;
 
     case 'edit':
+        // Walidacja ceny
+        $price = floatval($_POST['price']);
+        if ($price < 0) {
+            $_SESSION['album_message'] = "❌ Cena nie może być ujemna.";
+            header("Location: manage_products.php");
+            exit();
+        }
+
         $stmt = $connect->prepare("UPDATE albums SET id_artist = :id_artist, title = :title, release_date = :release_date, price = :price, cover_path = :cover_path WHERE id_album = :id");
         $stmt->execute([
             'id' => $_POST['id_album'],
             'id_artist' => $_POST['id_artist'],
             'title' => $_POST['title'],
             'release_date' => $_POST['release_date'],
-            'price' => $_POST['price'],
+            'price' => $price,
             'cover_path' => $_POST['cover_path']
         ]);
-        echo "Zaktualizowano album.";
+        $_SESSION['album_message'] = "✅ Zaktualizowano album.";
+        header('Location: manage_products.php');
         break;
 
     default:

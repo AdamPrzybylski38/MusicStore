@@ -134,7 +134,7 @@ try {
                         <input type="date" name="release_date" class="form-control" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" step="0.01" name="price" class="form-control" placeholder="Cena" required>
+                        <input type="number" step="0.01" name="price" class="form-control" placeholder="Cena" required min="0">
                     </div>
                     <div class="col-md-1">
                         <button type="submit" class="btn btn-success w-100">Dodaj</button>
@@ -143,7 +143,7 @@ try {
                 <hr>
                 <!-- Tabela z albumami -->
                 <div id="productsTable">
-                    <!-- AJAX-em wypełnimy tutaj dane -->
+
                 </div>
             </div>
 
