@@ -59,8 +59,6 @@ if (!is_numeric($price) || $price < 0) {
     exit();
 }
 
-
-
 // ZAKTUALIZUJ DANE
 $stmt = $connect->prepare("UPDATE albums SET id_artist = :id_artist, title = :title, release_date = :release_date, price = :price, cover_path = :cover_path WHERE id_album = :id");
 $stmt->execute([
