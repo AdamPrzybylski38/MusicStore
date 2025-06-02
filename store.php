@@ -44,12 +44,12 @@ require_once "connect.php";
                     <div class="col-12 col-md-6 text-center text-md-end">
                         <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
                             <!--DODANIE PRZYCISKU PANELU ADMINA -->
-                            <a href="admin.php" class="btn btn-warning w-sm-100 w-md-auto">Panel administratora</a>
+                            <a href="admin.php" class="btn btn-primary w-sm-100 w-md-auto">Panel administratora</a>
                             <!--DODANIE PRZYCISKU PANELU ADMINA -->
                         <?php endif; ?> <!--DODANIE PRZYCISKU PANELU ADMINA -->
                         <?php if (isset($_SESSION['is_mod']) && $_SESSION['is_mod']): ?>
                             <!--DODANIE PRZYCISKU PANELU MODERATORA  -->
-                            <a href="manage_orders.php" class="btn btn-outline-dark w-sm-100 w-md-auto">Panel moderatora</a>
+                            <a href="manage_orders.php" class="btn btn-outline-primary w-sm-100 w-md-auto">Panel moderatora</a>
                             <!--DODANIE PRZYCISKU PANELU Moderatora -->
                         <?php endif; ?>
                         <button id="toggleMenuBtn" class="btn btn-outline-secondary">☰ Menu</button>

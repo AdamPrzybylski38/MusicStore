@@ -114,8 +114,9 @@ try {
                                 <td><?= $id_user ?></td>
                                 <td><?= htmlspecialchars($user['username']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
-                                <td><?= $is_admin ? '✓' : '' ?></td>
-                                <td><?= $is_mod ? '✓' : '' ?></td>
+                                <td><?= $is_admin ? '<i class="bi bi-check-lg"></i>' : '' ?></td>
+                                <td><?= $is_mod ? '<i class="bi bi-check-lg"></i>' : '' ?></td>
+
                                 <td>
                                     <div class="d-flex justify-content-center flex-wrap gap-2">
                                         <!-- Admin -->
