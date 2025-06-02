@@ -11,7 +11,7 @@ try {
     }
 
     echo "<div class='table-responsive'>";
-    echo "<table class='table table-bordered table-custom'>";
+    echo "<table class='table table-bordered table-custom text-center'>";  // <-- dodane text-center
     echo "<thead><tr>
             <th>ID</th>
             <th>ID użytkownika</th>
@@ -30,9 +30,12 @@ try {
         echo "<td>{$row['status']}</td>";
         echo "<td>";
         if (strtolower($row['status']) !== 'anulowane') {
-            echo "<button class='btn btn-sm btn-danger cancel-order' data-id='{$row['id_order']}' title='Anuluj zamówienie'>
-                    <i class='bi bi-trash'></i>
-                  </button>";
+            // opakowanie przycisku w d-flex justify-content-center i odstęp gap-2
+            echo "<div class='d-flex justify-content-center gap-2'>
+                    <button class='btn btn-sm btn-danger cancel-order' data-id='{$row['id_order']}' title='Anuluj zamówienie'>
+                        <i class='bi bi-trash'></i>
+                    </button>
+                  </div>";
         } else {
             echo "—";
         }

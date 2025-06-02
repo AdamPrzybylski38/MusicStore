@@ -126,7 +126,7 @@ try {
                                                     class="btn btn-sm btn-outline-danger">Odbierz admina</button>
                                             <?php else: ?>
                                                 <button type="submit" name="action" value="add_admin"
-                                                    class="btn btn-sm btn-outline-warning">Nadaj admina</button>
+                                                    class="btn btn-sm btn-primary">Nadaj admina</button>
                                             <?php endif; ?>
                                         </form>
 
@@ -138,7 +138,7 @@ try {
                                                     class="btn btn-sm btn-outline-danger">Odbierz moderatora</button>
                                             <?php else: ?>
                                                 <button type="submit" name="action" value="add_mod"
-                                                    class="btn btn-sm btn-outline-info">Nadaj moderatora</button>
+                                                    class="btn btn-sm btn-success">Nadaj moderatora</button>
                                             <?php endif; ?>
                                         </form>
 
@@ -147,7 +147,7 @@ try {
                                             onsubmit="return confirm('Na pewno usunąć użytkownika?');" class="m-0">
                                             <input type="hidden" name="id_user" value="<?= $id_user ?>">
                                             <button type="submit" name="action" value="delete_user"
-                                                class="btn btn-sm btn-outline-danger" title="Usuń użytkownika">
+                                                class="btn btn-sm btn-danger" title="Usuń użytkownika">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>

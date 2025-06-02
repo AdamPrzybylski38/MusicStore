@@ -34,3 +34,4 @@ try {
 } catch (PDOException $e) {
     echo "Błąd zamówienia: " . htmlspecialchars($e->getMessage());
 }
+?>

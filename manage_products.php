@@ -105,8 +105,7 @@ try {
                     <?php unset($_SESSION['album_message']); ?>
                 <?php endif; ?>
 
-
-                <h3>Produkty</h3>
+                <h4>Dodaj nowy album</h4>
 
                 <!-- Formularz dodawania nowego albumu -->
                 <form method="post" action="product_actions.php" class="row g-3 mb-4" enctype="multipart/form-data">
@@ -141,7 +140,7 @@ try {
                         <button type="submit" class="btn btn-success w-100">Dodaj</button>
                     </div>
                 </form>
-
+                <hr>
                 <!-- Tabela z albumami -->
                 <div id="productsTable">
                     <!-- AJAX-em wypełnimy tutaj dane -->

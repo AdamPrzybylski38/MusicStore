@@ -26,7 +26,8 @@ try {
     }
 
     echo '<div class="table-responsive">';
-    echo '<table class="table table-striped table-bordered align-middle table-custom">';
+    // dodajemy text-center by wyśrodkować zawartość tabeli, align-middle już masz by pionowo wyśrodkować wiersze
+    echo '<table class="table table-striped table-bordered align-middle table-custom text-center">';
     echo '<thead><tr>
         <th>ID Albumu</th>
         <th>ID Artysty</th>
@@ -48,15 +49,17 @@ try {
             <td>{$album['release_date']}</td>
             <td>{$album['price']} zł</td>
             <td><img src='{$album['cover_path']}' alt='okładka' style='height: 50px;'></td>
-            <td> 
-             <div class='d-flex align-items-center gap-2'>
+            <td>
+                <div class='d-flex justify-content-center align-items-center gap-2'>
                     <button class='btn btn-sm btn-outline-secondary change-copy' data-id='{$album['id_album']}' data-change='-1'>–</button>  
                     <span class='copy-count' id='copy-count-{$album['id_album']}'>{$album['num_copies']}</span>
                     <button class='btn btn-sm btn-outline-primary change-copy' data-id='{$album['id_album']}' data-change='1'>+</button>  
-            </div>
+                </div>
             </td>
             <td>
+                <div class='d-flex justify-content-center gap-2'>
                     <button class='btn btn-sm btn-danger delete-album' data-id='{$album['id_album']}' title='Usuń'><i class='bi bi-trash'></i></button>
+                </div>
             </td>
           </tr>";
     }
