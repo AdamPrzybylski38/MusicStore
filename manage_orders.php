@@ -41,8 +41,6 @@ try {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -68,36 +66,63 @@ try {
                     </h1>
                 </div>
             </div>
-        <div>
-            <div class="bg-light text-dark rounded py-2 px-3">
-                <div class="container">
-                    <div
-                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
-
-                        <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
-                            Zarządzanie zamówieniami
-                        </div>
-
+            <div>
+                <div class="bg-light text-dark rounded py-2 px-3">
+                    <div class="container">
                         <div
-                            class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
-                            <?php if ($isAdmin): ?>
-                                <a href="admin.php" class="btn btn-outline-dark">Panel administracyjny</a>
-                            <?php endif; ?>
-                            <a href="manage_products.php" class="btn btn-outline-success w-sm-100 w-md-auto">Zarządzanie produktami</a>
-                            <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
-                        </div>
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
 
+                            <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
+                                Zarządzanie zamówieniami
+                            </div>
+
+                            <div
+                                class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
+                                <?php if ($isAdmin): ?>
+                                    <a href="admin.php" class="btn btn-outline-dark">Panel administracyjny</a>
+                                <?php endif; ?>
+                                <a href="manage_products.php"
+                                    class="btn btn-outline-success w-sm-100 w-md-auto">Zarządzanie produktami</a>
+                                <a href="store.php" class="btn btn-outline-secondary w-sm-100 w-md-auto">Powrót do
+                                    sklepu</a>
+                                <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <main>
         <div class="main-box">
-
+            <div class="" container my-4">
+                <div id="orderTable"></div>
+            </div>
         </div>
     </main>
+
+    <script>
+        $(document).ready(function () {
+            function loadOrders() {
+                $('#orderTable').load('order_table.php');
+            }
+
+            loadOrders();
+
+            $(document).on('click', '.cancel-order', function () {
+                if (confirm('Na pewno anulować zamówienie?')) {
+                    $.post('order_actions.php', {
+                        action: 'cancel',
+                        id_order: $(this).data('id')
+                    }, function (response) {
+                        alert(response);
+                        loadOrders();
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 

@@ -42,11 +42,22 @@ require_once "connect.php";
                         <div class="fs-4 fw-semibold">Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!</div>
                     </div>
                     <div class="col-12 col-md-6 text-center text-md-end">
+                        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+                            <!--DODANIE PRZYCISKU PANELU ADMINA -->
+                            <a href="admin.php" class="btn btn-warning w-sm-100 w-md-auto">Panel administratora</a>
+                            <!--DODANIE PRZYCISKU PANELU ADMINA -->
+                        <?php endif; ?> <!--DODANIE PRZYCISKU PANELU ADMINA -->
+                        <?php if (isset($_SESSION['is_mod']) && $_SESSION['is_mod']): ?>
+                            <!--DODANIE PRZYCISKU PANELU MODERATORA  -->
+                            <a href="manage_orders.php" class="btn btn-outline-dark w-sm-100 w-md-auto">Panel moderatora</a>
+                            <!--DODANIE PRZYCISKU PANELU Moderatora -->
+                        <?php endif; ?>
                         <button id="toggleMenuBtn" class="btn btn-outline-secondary">☰ Menu</button>
                     </div>
                 </div>
 
-                <div id="menu" class="d-none d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-end mt-3">
+                <div id="menu"
+                    class="d-none d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-end mt-3">
                     <a href="chat.php" class="btn btn-info w-sm-100 w-md-auto">Asystent AI</a>
                     <a href="cart.php" class="btn btn-outline-primary w-sm-100 w-md-auto">Koszyk</a>
                     <a href="orders.php" class="btn btn-outline-success w-sm-100 w-md-auto">Zamówienia</a>

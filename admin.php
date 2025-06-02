@@ -23,6 +23,17 @@ try {
     echo "Błąd bazy danych: " . $e->getMessage();
     exit();
 }
+
+try {
+    $stmt = $connect->query("SELECT u.id_user, u.username, u.email,
+        EXISTS(SELECT 1 FROM admins a WHERE a.id_user = u.id_user) AS is_admin,
+        EXISTS(SELECT 1 FROM mods m WHERE m.id_user = u.id_user) AS is_mod
+        FROM users u
+        ORDER BY u.id_user");
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Błąd bazy danych: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,32 +62,95 @@ try {
                     </h1>
                 </div>
             </div>
-        <div>
-            <div class="bg-light text-dark rounded py-2 px-3">
-                <div class="container">
-                    <div
-                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
-
-                        <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
-                            Panel administracyjny
-                        </div>
-
+            <div>
+                <div class="bg-light text-dark rounded py-2 px-3">
+                    <div class="container">
                         <div
-                            class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
-                            <a href="manage_orders.php" class="btn btn-outline-primary w-sm-100 w-md-auto">Zarządzanie zamówieniami</a>
-                            <a href="manage_products.php" class="btn btn-outline-success w-sm-100 w-md-auto">Zarządzanie produktami</a>
-                            <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
-                        </div>
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
 
+                            <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
+                                Panel administracyjny
+                            </div>
+
+                            <div
+                                class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
+                                <a href="manage_orders.php"
+                                    class="btn btn-outline-primary w-sm-100 w-md-auto">Zarządzanie zamówieniami</a>
+                                <a href="manage_products.php"
+                                    class="btn btn-outline-success w-sm-100 w-md-auto">Zarządzanie produktami</a>
+                                <a href="store.php" class="btn btn-outline-secondary w-sm-100 w-md-auto">Powrót do
+                                    sklepu</a>
+                                <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </header>
-    
+
     <main>
         <div class="main-box">
+            <table class="table table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nazwa użytkownika</th>
+                        <th>Email</th>
+                        <th>Admin</th>
+                        <th>Moderator</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user):
+                        $id_user = $user['id_user'];
+                        $is_admin = $user['is_admin'];
+                        $is_mod = $user['is_mod'];
+                        ?>
+                        <tr>
+                            <td><?= $id_user ?></td>
+                            <td><?= htmlspecialchars($user['username']) ?></td>
+                            <td><?= htmlspecialchars($user['email']) ?></td>
+                            <td><?= $is_admin ? '✔️' : '' ?></td>
+                            <td><?= $is_mod ? '✔️' : '' ?></td>
+                            <td class="d-flex gap-2 flex-wrap">
+                                <!-- Admin -->
+                                <form method="post" action="user_actions.php">
+                                    <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                    <?php if ($is_admin): ?>
+                                        <button type="submit" name="action" value="remove_admin"
+                                            class="btn btn-sm btn-outline-danger">Odbierz admina</button>
+                                    <?php else: ?>
+                                        <button type="submit" name="action" value="add_admin"
+                                            class="btn btn-sm btn-outline-warning">Nadaj admina</button>
+                                    <?php endif; ?>
+                                </form>
 
+                                <!-- Moderator -->
+                                <form method="post" action="user_actions.php">
+                                    <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                    <?php if ($is_mod): ?>
+                                        <button type="submit" name="action" value="remove_mod"
+                                            class="btn btn-sm btn-outline-danger">Odbierz moderatora</button>
+                                    <?php else: ?>
+                                        <button type="submit" name="action" value="add_mod"
+                                            class="btn btn-sm btn-outline-info">Nadaj moderatora</button>
+                                    <?php endif; ?>
+                                </form>
+
+                                <!-- Usunięcie użytkownika -->
+                                <form method="post" action="user_actions.php"
+                                    onsubmit="return confirm('Na pewno usunąć użytkownika?');">
+                                    <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                    <button type="submit" name="action" value="delete_user"
+                                        class="btn btn-sm btn-outline-danger">Usuń</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </main>
 

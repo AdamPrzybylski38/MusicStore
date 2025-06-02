@@ -156,3 +156,112 @@ BEGIN
     ORDER BY o.order_date DESC;
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+--DODAWANIE OPCJI DO PANELU ADMIN
+
+-- Pobieranie wszystkich albumow
+CREATE OR REPLACE FUNCTION get_all_albums()
+RETURNS TABLE (
+    id_album INT,
+    id_artist INT,
+    title VARCHAR,
+    release_date DATE,
+    price NUMERIC,
+    cover_path VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY SELECT id_album, id_artist, title, release_date, price, cover_path FROM albums;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Dodawanie albumu
+CREATE OR REPLACE PROCEDURE add_album(
+    p_id_artist INT,
+    p_title VARCHAR,
+    p_release_date DATE,
+    p_price NUMERIC,
+    p_cover_path VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO albums(id_artist, title, release_date, price, cover_path)
+    VALUES (p_id_artist, p_title, p_release_date, p_price, p_cover_path);
+END;
+$$;
+
+-- Modyfikacja albumu
+CREATE OR REPLACE PROCEDURE update_album(
+    p_id_album INT,
+    p_id_artist INT,
+    p_title VARCHAR,
+    p_release_date DATE,
+    p_price NUMERIC,
+    p_cover_path VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE albums
+    SET id_artist = p_id_artist,
+        title = p_title,
+        release_date = p_release_date,
+        price = p_price,
+        cover_path = p_cover_path
+    WHERE id_album = p_id_album;
+END;
+$$;
+
+-- Usuwanie albumu
+CREATE OR REPLACE PROCEDURE delete_album(p_id_album INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM albums WHERE id_album = p_id_album;
+END;
+$$;
+
+-- Pobieranie wszystkich zamowien (zmiana)
+CREATE OR REPLACE FUNCTION get_all_orders()
+RETURNS TABLE (
+    id_order INT,
+    id_user INT,
+    id_copy INT,
+    order_date TIMESTAMP,
+    status VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT o.id_order, o.id_user, o.id_copy, o.order_date, o.status 
+    FROM orders o;
+END;
+$$ LANGUAGE plpgsql;
+
+--potrzebne do zarzaeddzanie uzytkownikami 
+CREATE OR REPLACE PROCEDURE delete_user(p_id_user INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM users WHERE id_user = p_id_user;
+END;
+$$;
+
+-- Usuwanie administratora
+CREATE OR REPLACE PROCEDURE remove_admin(p_id_user INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM admins WHERE id_user = p_id_user;
+END;
+$$;
+
+-- Usuwanie moderatora
+CREATE OR REPLACE PROCEDURE remove_mod(p_id_user INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM mods WHERE id_user = p_id_user;
+END;
+$$;

@@ -19,6 +19,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $user['username'];
             $_SESSION['id_activity'] = $user['id_activity'];
 
+            // Sprawdzenie, czy użytkownik jest administratorem
+            // Sprawdzenie, czy użytkownik jest administratorem
+            $stmt = $connect->prepare("SELECT 1 FROM admins WHERE id_user = :id_user");
+            $stmt->execute(['id_user' => $user['id_user']]);
+            $isAdmin = $stmt->rowCount() > 0;
+
+            // Sprawdzenie, czy użytkownik jest moderatorem
+            $stmt = $connect->prepare("SELECT 1 FROM mods WHERE id_user = :id_user");
+            $stmt->execute(['id_user' => $user['id_user']]);
+            $isMod = $stmt->rowCount() > 0;
+
+            // Ustawienie sesji z uprawnieniami
+            $_SESSION['is_admin'] = $isAdmin;
+            $_SESSION['is_mod'] = !$isAdmin && $isMod;  // moderator tylko jeśli NIE jest adminem
+
+
             //przekierowanie do strony chatu
             header('Location: store.php');
             exit();
