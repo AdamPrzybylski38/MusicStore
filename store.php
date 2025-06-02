@@ -1,14 +1,12 @@
 <?php
 session_start();
 
-// sprawdzenie, czy użytkownik jest zalogowany
 if (!isset($_SESSION['id_user'])) {
     header('Location: index.php');
     exit();
 }
 
 require_once "connect.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -36,38 +34,67 @@ require_once "connect.php";
                     </h1>
                 </div>
             </div>
-        <div>
-            <div class="bg-light text-dark rounded py-2 px-3">
-                <div class="container">
-                    <div
-                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
 
-                        <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
-                            Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!
-                        </div>
+            <div class="bg-light text-dark rounded py-3 px-3">
 
-                        <div
-                            class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
-                            <a href="chat.php" class="btn btn-info w-sm-100 w-md-auto">Asystent AI</a>
-                            <a href="cart.php" class="btn btn-outline-primary w-sm-100 w-md-auto">Koszyk</a>
-                            <a href="orders.php" class="btn btn-outline-success w-sm-100 w-md-auto">Zamówienia</a>
-                            <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
-                        </div>
-
+                <div class="row align-items-center text-center text-md-start mb-2">
+                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+                        <div class="fs-4 fw-semibold">Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!</div>
+                    </div>
+                    <div class="col-12 col-md-6 text-center text-md-end">
+                        <button id="toggleMenuBtn" class="btn btn-outline-secondary">☰ Menu</button>
                     </div>
                 </div>
+
+                <div id="menu" class="d-none d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-end mt-3">
+                    <a href="chat.php" class="btn btn-info w-sm-100 w-md-auto">Asystent AI</a>
+                    <a href="cart.php" class="btn btn-outline-primary w-sm-100 w-md-auto">Koszyk</a>
+                    <a href="orders.php" class="btn btn-outline-success w-sm-100 w-md-auto">Zamówienia</a>
+                    <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
+                </div>
+
             </div>
         </div>
     </header>
 
     <main>
-        <div class="main-box">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="main-box container">
 
+            <?php
+            $allowedSorts = ['title', 'price'];
+            $sort = isset($_GET['sort']) && in_array($_GET['sort'], $allowedSorts) ? $_GET['sort'] : 'title';
+            $order = (isset($_GET['order']) && strtolower($_GET['order']) === 'desc') ? 'desc' : 'asc';
+            $nextOrder = ($order === 'asc') ? 'desc' : 'asc';
+            ?>
+
+            <div class="d-flex justify-content-center mb-4 mt-3">
+                <div class="btn-group" role="group" aria-label="Sortowanie">
+                    <a href="store.php?sort=title&order=<?= ($sort === 'title' ? $nextOrder : 'asc') ?>"
+                        class="btn btn-outline-secondary<?= ($sort === 'title') ? ' active' : '' ?>">
+                        Sortuj po nazwie <?= ($sort === 'title' ? ($order === 'asc' ? '▲' : '▼') : '') ?>
+                    </a>
+                    <a href="store.php?sort=price&order=<?= ($sort === 'price' ? $nextOrder : 'asc') ?>"
+                        class="btn btn-outline-secondary<?= ($sort === 'price') ? ' active' : '' ?>">
+                        Sortuj po cenie <?= ($sort === 'price' ? ($order === 'asc' ? '▲' : '▼') : '') ?>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 <?php
                 try {
                     $stmt = $connect->query("SELECT * FROM get_available_albums()");
                     $albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    usort($albums, function ($a, $b) use ($sort, $order) {
+                        if ($sort === 'price') {
+                            return ($order === 'asc') ? ($a['price'] <=> $b['price']) : ($b['price'] <=> $a['price']);
+                        } else {
+                            return ($order === 'asc')
+                                ? strcasecmp($a['title'], $b['title'])
+                                : strcasecmp($b['title'], $a['title']);
+                        }
+                    });
 
                     if ($albums && count($albums) > 0) {
                         foreach ($albums as $row) {
@@ -78,7 +105,6 @@ require_once "connect.php";
                             $cover = htmlspecialchars($row['cover_path']);
                             $price = number_format((float) $row['price'], 2, ',', '');
 
-                            // Komunikat dla tego albumu (jeśli istnieje)
                             $message = '';
                             if (isset($_SESSION['message'][$id_album])) {
                                 $msg_text = htmlspecialchars($_SESSION['message'][$id_album]);
@@ -95,7 +121,7 @@ require_once "connect.php";
                                             <p class="card-text fw-bold">Cena: $price zł</p>
                                             <p class="card-text fw-bold">Dostępne sztuki: $copies</p>
                                             $message
-                                            <a href="add_to_cart.php?id_album=$id_album" class="btn btn-outline-primary mt-auto">Dodaj do koszyka</a>
+                                            <a href="add_to_cart.php?id_album=$id_album&sort=$sort&order=$order" class="btn btn-outline-primary mt-auto">Dodaj do koszyka</a>
                                         </div>
                                     </div>
                                 </div>
@@ -109,10 +135,17 @@ require_once "connect.php";
                     echo '<div class="col-12 text-danger">Błąd zapytania: ' . htmlspecialchars($e->getMessage()) . '</div>';
                 }
                 ?>
-
             </div>
         </div>
     </main>
+
+    <script>
+        $(document).ready(function () {
+            $('#toggleMenuBtn').click(function () {
+                $('#menu').toggleClass('d-none');
+            });
+        });
+    </script>
 
 </body>
 

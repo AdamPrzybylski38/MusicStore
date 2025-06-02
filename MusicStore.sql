@@ -129,7 +129,7 @@ INSERT INTO albums (id_artist, title, release_date, price, cover_path) VALUES
 (16, 'Księżyc milczy luty', '2016-11-14', 89.99, 'albums/Furia - Księżyc milczy luty, Cover art.webp'),
 (17, 'Exercises in Futility', '2015-08-7', 99.99, 'albums/Mgła - Exercises in Futility, Cover art.webp'),
 (18, 'Sunbather', '2013-06-11', 89.99, 'albums/Deafheaven - Sunbather, Cover art.webp'),
-(18, 'Lonly People With Power', '2025-03-28', 119.99, 'albums/Deafheaven - Lonely People With Power, Cover art.webp').
+(18, 'Lonly People With Power', '2025-03-28', 119.99, 'albums/Deafheaven - Lonely People With Power, Cover art.webp'),
 (19, 'faj den EnΩëtonëghappan nvona Tóvarba dëhajnva ëfpalte∫ eh yënáº£les §anënbe cetmac eh den léhams selb`ºe nêbam`o∫nëb ◊u∫an d‡éf§', '2024-12-26', 79.99, 'albums/Trhä-Cover-Art.jpg');
 
 INSERT INTO copies (id_album) VALUES

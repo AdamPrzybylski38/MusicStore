@@ -10,7 +10,7 @@ if (!isset($_SESSION['id_user']) || !isset($_GET['id_album'])) {
 $id_album = (int) $_GET['id_album'];
 
 // Połączenie z bazą danych
-require 'connect.php'; // używamy $connect
+require 'connect.php';
 
 // Zapytanie: ile jest dostępnych kopii (czyli niezamówionych) danego albumu
 $stmt = $connect->prepare("
@@ -44,6 +44,11 @@ if ($current_in_cart < $available) {
     $_SESSION['message'][$id_album] = "Brak dostępnych egzemplarzy tego albumu.";
 }
 
-header("Location: store.php");
+// Pobierz parametry sortowania, jeśli istnieją
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'title';
+$order = isset($_GET['order']) ? $_GET['order'] : 'asc';
+
+// Przekierowanie z powrotem z zachowaniem sortowania
+header("Location: store.php?sort=" . urlencode($sort) . "&order=" . urlencode($order));
 exit();
 ?>

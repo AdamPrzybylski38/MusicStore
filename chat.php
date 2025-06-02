@@ -90,23 +90,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </h1>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="bg-light text-dark rounded py-2 px-3">
-                <div class="container">
-                    <div
-                        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 flex-wrap">
 
-                        <div class="fs-4 fw-semibold text-center text-md-start w-100 w-md-auto">
-                            Witaj, <?= htmlspecialchars($_SESSION["username"]) ?>!
-                        </div>
-
-                        <div
-                            class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto justify-content-center justify-content-md-end">
-                            <a href="store.php" class="btn btn-secondary w-sm-100 w-md-auto">Powrót do sklepu</a>
+            <div class="bg-light text-dark rounded py-3 px-3">
+                <div class="row align-items-center text-center text-md-start mb-2">
+                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+                        <div class="fs-4 fw-semibold">Asystent AI</div>
+                    </div>
+                    <div class="col-12 col-md-6 text-center text-md-end">
+                        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-end">
+                            <a href="store.php" class="btn btn-outline-secondary w-sm-100 w-md-auto">Powrót do
+                                sklepu</a>
                             <a href="logout.php" class="btn btn-danger w-sm-100 w-md-auto">Wyloguj się</a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -120,7 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="response-box" class="mb-3"></div>
             <div class="input-group">
                 <a href="chat.php?new_chat=1" class="btn btn-secondary">+</a>
-                <input type="text" name="query" id="query" class="form-control" placeholder="Wpisz zapytanie..." required>
+                <input type="text" name="query" id="query" class="form-control" placeholder="Wpisz zapytanie..."
+                    required>
                 <button id="send-btn" class="btn btn-primary">Wyślij</button>
             </div>
         </div>
@@ -185,24 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             scrollToBottom();
         });
-
-        // pobieranie sugestii z pliku suggestions.php
-        $.getJSON("suggestions.php", function (suggestions) {
-            if (suggestions.length > 0) {
-                suggestions.forEach(function (prompt) {
-                    var btn = $('<button>', {
-                        class: 'btn btn-outline-secondary btn-sm',
-                        text: prompt,
-                        click: function () {
-                            $("#query").val(prompt);
-                            $("#send-btn").click();
-                        }
-                    });
-                    $("#suggestions").append(btn);
-                });
-            }
-        });
-
     </script>
 </body>
 
