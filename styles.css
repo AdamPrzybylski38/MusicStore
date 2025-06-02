@@ -77,6 +77,12 @@ main {
     justify-content: center;
 }
 
+.table-custom thead tr th {
+    background-color: #007bff !important;
+    color: white !important;
+    font-weight: bold;
+}
+
 .chat-container {
     display: flex;
     flex-direction: column;

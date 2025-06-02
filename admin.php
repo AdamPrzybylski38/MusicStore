@@ -91,69 +91,76 @@ try {
 
     <main>
         <div class="main-box">
-            <table class="table table-bordered table-striped">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nazwa użytkownika</th>
-                        <th>Email</th>
-                        <th>Admin</th>
-                        <th>Moderator</th>
-                        <th>Akcje</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($users as $user):
-                        $id_user = $user['id_user'];
-                        $is_admin = $user['is_admin'];
-                        $is_mod = $user['is_mod'];
-                        ?>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-custom text-center">
+
+                    <thead>
                         <tr>
-                            <td><?= $id_user ?></td>
-                            <td><?= htmlspecialchars($user['username']) ?></td>
-                            <td><?= htmlspecialchars($user['email']) ?></td>
-                            <td><?= $is_admin ? '✔️' : '' ?></td>
-                            <td><?= $is_mod ? '✔️' : '' ?></td>
-                            <td class="d-flex gap-2 flex-wrap">
-                                <!-- Admin -->
-                                <form method="post" action="user_actions.php">
-                                    <input type="hidden" name="id_user" value="<?= $id_user ?>">
-                                    <?php if ($is_admin): ?>
-                                        <button type="submit" name="action" value="remove_admin"
-                                            class="btn btn-sm btn-outline-danger">Odbierz admina</button>
-                                    <?php else: ?>
-                                        <button type="submit" name="action" value="add_admin"
-                                            class="btn btn-sm btn-outline-warning">Nadaj admina</button>
-                                    <?php endif; ?>
-                                </form>
-
-                                <!-- Moderator -->
-                                <form method="post" action="user_actions.php">
-                                    <input type="hidden" name="id_user" value="<?= $id_user ?>">
-                                    <?php if ($is_mod): ?>
-                                        <button type="submit" name="action" value="remove_mod"
-                                            class="btn btn-sm btn-outline-danger">Odbierz moderatora</button>
-                                    <?php else: ?>
-                                        <button type="submit" name="action" value="add_mod"
-                                            class="btn btn-sm btn-outline-info">Nadaj moderatora</button>
-                                    <?php endif; ?>
-                                </form>
-
-                                <!-- Usunięcie użytkownika -->
-                                <form method="post" action="user_actions.php"
-                                    onsubmit="return confirm('Na pewno usunąć użytkownika?');">
-                                    <input type="hidden" name="id_user" value="<?= $id_user ?>">
-                                    <button type="submit" name="action" value="delete_user"
-                                        class="btn btn-sm btn-outline-danger">Usuń</button>
-                                </form>
-                            </td>
+                            <th>ID</th>
+                            <th>Nazwa użytkownika</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th>Moderator</th>
+                            <th>Akcje</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </main>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user):
+                            $id_user = $user['id_user'];
+                            $is_admin = $user['is_admin'];
+                            $is_mod = $user['is_mod'];
+                            ?>
+                            <tr>
+                                <td><?= $id_user ?></td>
+                                <td><?= htmlspecialchars($user['username']) ?></td>
+                                <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td><?= $is_admin ? '✓' : '' ?></td>
+                                <td><?= $is_mod ? '✓' : '' ?></td>
+                                <td>
+                                    <div class="d-flex justify-content-center flex-wrap gap-2">
+                                        <!-- Admin -->
+                                        <form method="post" action="user_actions.php" class="m-0">
+                                            <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                            <?php if ($is_admin): ?>
+                                                <button type="submit" name="action" value="remove_admin"
+                                                    class="btn btn-sm btn-outline-danger">Odbierz admina</button>
+                                            <?php else: ?>
+                                                <button type="submit" name="action" value="add_admin"
+                                                    class="btn btn-sm btn-outline-warning">Nadaj admina</button>
+                                            <?php endif; ?>
+                                        </form>
 
+                                        <!-- Moderator -->
+                                        <form method="post" action="user_actions.php" class="m-0">
+                                            <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                            <?php if ($is_mod): ?>
+                                                <button type="submit" name="action" value="remove_mod"
+                                                    class="btn btn-sm btn-outline-danger">Odbierz moderatora</button>
+                                            <?php else: ?>
+                                                <button type="submit" name="action" value="add_mod"
+                                                    class="btn btn-sm btn-outline-info">Nadaj moderatora</button>
+                                            <?php endif; ?>
+                                        </form>
+
+                                        <!-- Usuń użytkownika -->
+                                        <form method="post" action="user_actions.php"
+                                            onsubmit="return confirm('Na pewno usunąć użytkownika?');" class="m-0">
+                                            <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                            <button type="submit" name="action" value="delete_user"
+                                                class="btn btn-sm btn-outline-danger" title="Usuń użytkownika">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
 </body>
 
 </html>

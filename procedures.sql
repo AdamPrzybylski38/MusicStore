@@ -265,3 +265,25 @@ BEGIN
     DELETE FROM mods WHERE id_user = p_id_user;
 END;
 $$;
+
+-- Dodawanie administratora
+CREATE OR REPLACE PROCEDURE add_admin(p_id_user INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM admins WHERE id_user = p_id_user) THEN
+        INSERT INTO admins(id_user) VALUES (p_id_user);
+    END IF;
+END;
+$$;
+
+-- Dodawanie moderatora
+CREATE OR REPLACE PROCEDURE add_mod(p_id_user INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM mods WHERE id_user = p_id_user) THEN
+        INSERT INTO mods(id_user) VALUES (p_id_user);
+    END IF;
+END;
+$$;

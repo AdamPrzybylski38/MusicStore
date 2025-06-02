@@ -100,6 +100,12 @@ try {
     <main>
         <div class="main-box"> <!-- DODANE DO ZARZADZANIE W ADMIN -->
             <div class="container mt-4">
+                <?php if (isset($_SESSION['album_message'])): ?>
+                    <div class="alert alert-info"><?= $_SESSION['album_message'] ?></div>
+                    <?php unset($_SESSION['album_message']); ?>
+                <?php endif; ?>
+
+
                 <h3>Produkty</h3>
 
                 <!-- Formularz dodawania nowego albumu -->
@@ -109,7 +115,21 @@ try {
                         <input type="text" name="title" class="form-control" placeholder="Tytuł" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" name="id_artist" class="form-control" placeholder="ID artysty" required>
+                        <select name="id_artist" class="form-select">
+                            <option value="">-- Wybierz istniejącego artystę --</option>
+                            <?php
+                            try {
+                                $stmt = $connect->query("SELECT id_artist, artist_name FROM artists ORDER BY artist_name");
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=\"{$row['id_artist']}\">{$row['artist_name']} (ID: {$row['id_artist']})</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option disabled>Błąd bazy</option>";
+                            }
+                            ?>
+                        </select>
+                        <small class="text-muted">Lub wpisz nowego artystę poniżej</small>
+                        <input type="text" name="new_artist" class="form-control mt-1" placeholder="Nowy artysta">
                     </div>
                     <div class="col-md-2">
                         <input type="date" name="release_date" class="form-control" required>

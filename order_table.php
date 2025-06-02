@@ -1,4 +1,4 @@
-<?php //zarzadzanie zamowieniami  admin 
+<?php
 require_once "connect.php";
 
 try {
@@ -10,8 +10,16 @@ try {
         exit;
     }
 
-    echo "<table class='table table-bordered'>";
-    echo "<thead><tr><th>ID</th><th>ID użytkownika</th><th>ID kopii</th><th>Data</th><th>Status</th><th>Akcja</th></tr></thead><tbody>";
+    echo "<div class='table-responsive'>";
+    echo "<table class='table table-bordered table-custom'>";
+    echo "<thead><tr>
+            <th>ID</th>
+            <th>ID użytkownika</th>
+            <th>ID kopii</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Akcja</th>
+          </tr></thead><tbody>";
 
     foreach ($orders as $row) {
         echo "<tr>";
@@ -22,7 +30,9 @@ try {
         echo "<td>{$row['status']}</td>";
         echo "<td>";
         if (strtolower($row['status']) !== 'anulowane') {
-            echo "<button class='btn btn-sm btn-danger cancel-order' data-id='{$row['id_order']}'>Anuluj</button>";
+            echo "<button class='btn btn-sm btn-danger cancel-order' data-id='{$row['id_order']}' title='Anuluj zamówienie'>
+                    <i class='bi bi-trash'></i>
+                  </button>";
         } else {
             echo "—";
         }
@@ -30,6 +40,8 @@ try {
     }
 
     echo "</tbody></table>";
+    echo "</div>";
+
 } catch (PDOException $e) {
     echo "<div class='alert alert-danger'>Błąd: " . $e->getMessage() . "</div>";
 }

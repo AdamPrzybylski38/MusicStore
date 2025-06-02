@@ -17,16 +17,33 @@ $action = $_POST['action'] ?? '';
 
 switch ($action) {
     case 'add':
-        $stmt = $connect->prepare("INSERT INTO albums (id_artist, title, release_date, price, cover_path) VALUES (:id_artist, :title, :release_date, :price, :cover_path)");
+        // Obsługa nowego artysty lub wybranego istniejącego
+        if (!empty($_POST['new_artist'])) {
+            $stmt = $connect->prepare("INSERT INTO artists (artist_name) VALUES (:name) RETURNING id_artist");
+            $stmt->execute(['name' => $_POST['new_artist']]);
+            $id_artist = $stmt->fetchColumn();
+        } elseif (!empty($_POST['id_artist'])) {
+            $id_artist = (int) $_POST['id_artist'];
+        } else {
+            $_SESSION['album_message'] = "❌ Musisz wybrać istniejącego artystę lub podać nowego.";
+            header("Location: manage_products.php");
+            exit();
+        }
+
+        // Dodanie albumu
+        $stmt = $connect->prepare("INSERT INTO albums (id_artist, title, release_date, price, cover_path) 
+                               VALUES (:id_artist, :title, :release_date, :price, :cover_path)");
         $stmt->execute([
-            'id_artist' => $_POST['id_artist'],
+            'id_artist' => $id_artist,
             'title' => $_POST['title'],
             'release_date' => $_POST['release_date'],
             'price' => $_POST['price'],
             'cover_path' => $_POST['cover_path'] ?? 'albums/default_cover.png'
         ]);
-        echo "Dodano album.";
-        break;
+
+        $_SESSION['album_message'] = "✅ Dodano album.";
+        header("Location: manage_products.php");
+        exit();
 
     case 'delete':
         $stmt = $connect->prepare("DELETE FROM albums WHERE id_album = :id");

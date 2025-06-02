@@ -4,7 +4,8 @@ require_once "connect.php";
 try {
     $stmt = $connect->query("
     SELECT 
-    a.id_album, 
+    a.id_album,
+    a.id_artist,
     a.title, 
     ar.artist_name AS artist, 
     a.release_date, 
@@ -24,45 +25,46 @@ try {
         return;
     }
 
-    echo '<table class="table table-striped table-bordered align-middle">';
-    echo '<thead class="table-dark"><tr>
-            <th>ID</th>
-            <th>Tytuł</th>
-            <th>Artysta</th>
-            <th>Data wydania</th>
-            <th>Cena</th>
-            <th>Okładka</th>
-            <th>Kopie</th>
-            <th>Akcje</th>
-          </tr></thead><tbody>';
+    echo '<div class="table-responsive">';
+    echo '<table class="table table-striped table-bordered align-middle table-custom">';
+    echo '<thead><tr>
+        <th>ID Albumu</th>
+        <th>ID Artysty</th>
+        <th>Tytuł</th>
+        <th>Artysta</th>
+        <th>Data wydania</th>
+        <th>Cena</th>
+        <th>Okładka</th>
+        <th>Kopie</th>
+        <th>Akcje</th>
+      </tr></thead><tbody>';
 
     foreach ($albums as $album) {
-        /*NA DOLE DODANE ZARZADZANIE KOPIAMI W ZARZADZANIU PRODUKATMI W PANELU ADMIN */
         echo "<tr>
-                <td>{$album['id_album']}</td>
-                <td>{$album['title']}</td>
-                <td>{$album['artist']}</td>
-                <td>{$album['release_date']}</td>
-                <td>{$album['price']} zł</td>
-                <td><img src='{$album['cover_path']}' alt='okładka' style='height: 50px;'></td>
-                
-                <td> 
-                 <div class='d-flex align-items-center gap-2'>
-                        <button class='btn btn-sm btn-outline-secondary change-copy' data-id='{$album['id_album']}' data-change='-1'>–</button>  
-                        <span class='copy-count' id='copy-count-{$album['id_album']}'>{$album['num_copies']}</span>
-                        <button class='btn btn-sm btn-outline-primary change-copy' data-id='{$album['id_album']}' data-change='1'>+</button>  
-                </div>
-                </td>
-                <td>
-    <button class='btn btn-sm btn-danger delete-album' data-id='{$album['id_album']}'>
-        <i class='bi bi-trash'></i>
-    </button>
-</td>
-              </tr>";
+            <td>{$album['id_album']}</td>
+            <td>{$album['id_artist']}</td>
+            <td>{$album['title']}</td>
+            <td>{$album['artist']}</td>
+            <td>{$album['release_date']}</td>
+            <td>{$album['price']} zł</td>
+            <td><img src='{$album['cover_path']}' alt='okładka' style='height: 50px;'></td>
+            <td> 
+             <div class='d-flex align-items-center gap-2'>
+                    <button class='btn btn-sm btn-outline-secondary change-copy' data-id='{$album['id_album']}' data-change='-1'>–</button>  
+                    <span class='copy-count' id='copy-count-{$album['id_album']}'>{$album['num_copies']}</span>
+                    <button class='btn btn-sm btn-outline-primary change-copy' data-id='{$album['id_album']}' data-change='1'>+</button>  
+            </div>
+            </td>
+            <td>
+                    <button class='btn btn-sm btn-danger delete-album' data-id='{$album['id_album']}' title='Usuń'><i class='bi bi-trash'></i></button>
+            </td>
+          </tr>";
     }
 
     echo '</tbody></table>';
+    echo '</div>'; // zamknięcie .table-responsive
 
 } catch (PDOException $e) {
     echo "Błąd bazy: " . $e->getMessage();
 }
+?>
