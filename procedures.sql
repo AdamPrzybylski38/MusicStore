@@ -287,3 +287,33 @@ BEGIN
     END IF;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION get_albums_with_ordered_count()
+RETURNS TABLE (
+    id_album INT,
+    id_artist INT,
+    title VARCHAR,
+    artist VARCHAR,
+    release_date DATE,
+    price DECIMAL(10,2),
+    cover_path VARCHAR,
+    num_copies INT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        a.id_album,
+        a.id_artist,
+        a.title,
+        ar.artist_name AS artist,
+        a.release_date,
+        a.price,
+        a.cover_path,
+        GREATEST(COUNT(c.id_copy) - COUNT(o.id_copy), 0)::INT AS num_copies
+    FROM albums a
+    JOIN artists ar ON a.id_artist = ar.id_artist
+    LEFT JOIN copies c ON a.id_album = c.id_album
+    LEFT JOIN orders o ON c.id_copy = o.id_copy
+    GROUP BY a.id_album, a.id_artist, a.title, ar.artist_name, a.release_date, a.price, a.cover_path;
+END;
+$$ LANGUAGE plpgsql;

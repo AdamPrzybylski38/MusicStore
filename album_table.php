@@ -2,22 +2,8 @@
 require_once "connect.php";
 
 try {
-    $stmt = $connect->query("
-    SELECT 
-    a.id_album,
-    a.id_artist,
-    a.title, 
-    ar.artist_name AS artist, 
-    a.release_date, 
-    a.price, 
-    a.cover_path,
-    COUNT(c.id_copy) AS num_copies
-    FROM albums a
-    JOIN artists ar ON a.id_artist = ar.id_artist
-    LEFT JOIN copies c ON a.id_album = c.id_album
-    GROUP BY a.id_album, ar.artist_name, a.title, a.release_date, a.price, a.cover_path
-    ORDER BY a.id_album ASC
-    ");
+    $stmt = $connect->query("SELECT * FROM get_albums_with_ordered_count() ORDER BY id_album ASC");
+
     $albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($albums)) {
